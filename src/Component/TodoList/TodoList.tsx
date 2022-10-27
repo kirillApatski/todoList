@@ -4,12 +4,15 @@ import {FilteredType} from "../../App";
 type TodoListPropsType = {
     title: string
     tasks: Array<TaskType>
-    removeTask: (id: string) => void
-    changeFilter: (value: FilteredType) => void
-    addTasks: (title: string) => void
-    changeTaskStatus: (id: string, isDone: boolean) => void
+    todolistId: string
+    filter: FilteredType
+    removeTask: (id: string, todolistId: string) => void
+    changeFilter: (value: FilteredType, todolistId: string) => void
+    addTasks: (title: string, todolistId: string) => void
+    changeTaskStatus: (id: string, isDone: boolean, todolistId: string) => void
+    removeTodolist: (todolistId: string) => void
 }
-type TaskType = {
+export type TaskType = {
     id: string,
     title: string,
     isDone: boolean
@@ -22,7 +25,10 @@ const TodoList: FC<TodoListPropsType> = (
         removeTask,
         changeFilter,
         addTasks,
-        changeTaskStatus
+        changeTaskStatus,
+        filter,
+        todolistId,
+        removeTodolist
     }
 ) => {
     const [taskTitle, setTaskTitle] = useState('');
@@ -30,7 +36,7 @@ const TodoList: FC<TodoListPropsType> = (
 
     const addTask = () => {
         if (taskTitle.trim() !== '') {
-            addTasks(taskTitle.trim())
+            addTasks(taskTitle.trim(), todolistId)
         } else {
             setError('Title is required')
         }
@@ -42,18 +48,18 @@ const TodoList: FC<TodoListPropsType> = (
     }
     const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter' && taskTitle.trim() !== '') {
-            addTasks(taskTitle.trim())
+            addTasks(taskTitle.trim(), todolistId)
             setTaskTitle('')
         } else {
             setError('Title is required')
         }
     }
     const onFilterClickHandler = (filet: FilteredType) => {
-        changeFilter(filet)
+        changeFilter(filet, todolistId)
     }
     return (
         <div>
-            <h3>{title}</h3>
+            <h3>{title}<button onClick={() => removeTodolist(todolistId)}>X</button></h3>
             <div>
                 <input
                     value={taskTitle}
@@ -68,19 +74,25 @@ const TodoList: FC<TodoListPropsType> = (
                 {tasks.map(task => {
 
                     return (
-                        <li key={task.id}>
+                        <li key={task.id} className={task.isDone ? 'is-done' : ''}>
                             <input type="checkbox" checked={task.isDone}
-                                   onChange={(event) => changeTaskStatus(task.id, event.currentTarget.checked)}/>
+                                   onChange={(event) => changeTaskStatus(task.id, event.currentTarget.checked, todolistId)}/>
                             <span>{task.title}</span>
-                            <button onClick={() => removeTask(task.id)}>X</button>
+                            <button onClick={() => removeTask(task.id, todolistId)}>X</button>
                         </li>
                     )
                 })}
             </ul>
             <div>
-                <button onClick={() => onFilterClickHandler('all')}>All</button>
-                <button onClick={() => onFilterClickHandler('active')}>Active</button>
-                <button onClick={() => onFilterClickHandler('completed')}>Completed</button>
+                <button className={filter === 'all' ? 'active-filter' : ''}
+                        onClick={() => onFilterClickHandler('all')}>All
+                </button>
+                <button className={filter === 'active' ? 'active-filter' : ''}
+                        onClick={() => onFilterClickHandler('active')}>Active
+                </button>
+                <button className={filter === 'completed' ? 'active-filter' : ''}
+                        onClick={() => onFilterClickHandler('completed')}>Completed
+                </button>
             </div>
         </div>
     );
