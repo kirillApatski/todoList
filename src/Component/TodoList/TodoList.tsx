@@ -1,5 +1,6 @@
-import React, {ChangeEvent, KeyboardEvent, FC, useState} from 'react';
+import React, {FC} from 'react';
 import {FilteredType} from "../../App";
+import AddItemForm from "../common/AddItemForm/AddItemForm";
 
 type TodoListPropsType = {
     title: string
@@ -31,29 +32,10 @@ const TodoList: FC<TodoListPropsType> = (
         removeTodolist
     }
 ) => {
-    const [taskTitle, setTaskTitle] = useState('');
-    const [error, setError] = useState<string | null>(null)
+    const addTaskHandler = (title: string) => {
+        addTasks(title, todolistId)
+    }
 
-    const addTask = () => {
-        if (taskTitle.trim() !== '') {
-            addTasks(taskTitle.trim(), todolistId)
-        } else {
-            setError('Title is required')
-        }
-        setTaskTitle('')
-    }
-    const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        setTaskTitle(event.currentTarget.value)
-        setError('')
-    }
-    const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter' && taskTitle.trim() !== '') {
-            addTasks(taskTitle.trim(), todolistId)
-            setTaskTitle('')
-        } else {
-            setError('Title is required')
-        }
-    }
     const onFilterClickHandler = (filet: FilteredType) => {
         changeFilter(filet, todolistId)
     }
@@ -61,14 +43,7 @@ const TodoList: FC<TodoListPropsType> = (
         <div>
             <h3>{title}<button onClick={() => removeTodolist(todolistId)}>X</button></h3>
             <div>
-                <input
-                    value={taskTitle}
-                    onChange={onChangeHandler}
-                    onKeyDown={onKeyDownHandler}
-                    className={error ? 'error' : ''}
-                />
-                <button onClick={addTask}>+</button>
-                {error && <div className='error-message'>{error}</div>}
+                <AddItemForm callback={addTaskHandler}/>
             </div>
             <ul>
                 {tasks.map(task => {
