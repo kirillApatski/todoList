@@ -3,6 +3,8 @@ import {FilteredType} from "../../App";
 import AddItemForm from "../common/AddItemForm/AddItemForm";
 import {EditableSpan} from "../common/EditableSpan/EditableSpan";
 import {Task} from "./Task/Task";
+import {Button, IconButton} from "@mui/material";
+import { Delete } from '@mui/icons-material'
 
 type TodoListPropsType = {
     title: string
@@ -41,7 +43,6 @@ const TodoList: FC<TodoListPropsType> = (
     const addTaskHandler = (title: string) => {
         addTasks(title, todolistId)
     }
-
     const onFilterClickHandler = (filet: FilteredType) => {
         changeFilter(filet, todolistId)
     }
@@ -52,7 +53,9 @@ const TodoList: FC<TodoListPropsType> = (
         <div>
             <h3>
                 <EditableSpan value={title} onChange={onChangeTodolistTitle}/>
-                <button onClick={() => removeTodolist(todolistId)}>X</button>
+                <IconButton aria-label="delete" onClick={() => removeTodolist(todolistId)}>
+                    <Delete/>
+                </IconButton>
             </h3>
             <div>
                 <AddItemForm callback={addTaskHandler}/>
@@ -62,6 +65,7 @@ const TodoList: FC<TodoListPropsType> = (
 
                     return (
                         <Task
+                            key={task.id}
                             todolistId={todolistId}
                             task={task}
                             removeTask={removeTask}
@@ -72,15 +76,9 @@ const TodoList: FC<TodoListPropsType> = (
                 })}
             </ul>
             <div>
-                <button className={filter === 'all' ? 'active-filter' : ''}
-                        onClick={() => onFilterClickHandler('all')}>All
-                </button>
-                <button className={filter === 'active' ? 'active-filter' : ''}
-                        onClick={() => onFilterClickHandler('active')}>Active
-                </button>
-                <button className={filter === 'completed' ? 'active-filter' : ''}
-                        onClick={() => onFilterClickHandler('completed')}>Completed
-                </button>
+                <Button variant="contained" color={filter === 'all' ? 'success' : 'inherit'} onClick={() => onFilterClickHandler('all')}>All</Button>
+                <Button variant="contained" color={filter === 'active' ? 'success' : 'inherit'} onClick={() => onFilterClickHandler('active')}>Active</Button>
+                <Button variant="contained" color={filter === 'completed' ? 'success' : 'inherit'} onClick={() => onFilterClickHandler('completed')}>Completed</Button>
             </div>
         </div>
     );

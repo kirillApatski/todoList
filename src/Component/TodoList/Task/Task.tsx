@@ -1,6 +1,8 @@
 import React, {FC} from 'react';
 import {EditableSpan} from "../../common/EditableSpan/EditableSpan";
 import {TaskType} from "../TodoList";
+import {Delete} from "@mui/icons-material";
+import {Checkbox, IconButton} from "@mui/material";
 
 type PropsTaskType = {
     task: TaskType
@@ -19,10 +21,14 @@ export const Task: FC<PropsTaskType> = ({task, removeTask, changeTaskStatus, tod
 
     return (
         <li key={task.id} className={task.isDone ? 'is-done' : ''}>
+            <Checkbox defaultChecked color="success" checked={task.isDone}
+                      onChange={(event) => changeTaskStatus(task.id, event.currentTarget.checked, todolistId)}/>
             <input type="checkbox" checked={task.isDone}
                    onChange={(event) => changeTaskStatus(task.id, event.currentTarget.checked, todolistId)}/>
             <EditableSpan value={task.title} onChange={onChangeTaskTitleHandler}/>
-            <button onClick={() => removeTask(task.id, todolistId)}>X</button>
+            <IconButton aria-label="delete" onClick={() => removeTask(task.id, todolistId)}>
+                <Delete/>
+            </IconButton>
         </li>
     );
 };

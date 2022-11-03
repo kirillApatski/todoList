@@ -1,4 +1,5 @@
 import React, {ChangeEvent, FC, KeyboardEvent, useState} from 'react';
+import {Button, TextField} from "@mui/material";
 
 type AddItemFormPropsType = {
     callback: (title: string) => void
@@ -22,20 +23,29 @@ const AddItemForm: FC<AddItemFormPropsType> = ({callback}) => {
 
     const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
         setError(null)
-        if (event.key === 'Enter'){
+        if (event.key === 'Enter') {
             addItem()
         }
     }
 
     return (
         <div>
-            <input
+            <TextField
+                id="outlined-basic"
+                label="Add Title"
+                variant="outlined"
                 value={title}
                 onChange={onChangeHandler}
                 onKeyDown={onKeyDownHandler}
                 className={error ? 'error' : ''}
             />
-            <button onClick={addItem}>+</button>
+            <Button style={{
+                maxWidth: '30px',
+                minWidth: '30px',
+                maxHeight: '30px',
+                minHeight: '30px',
+                backgroundColor: 'grey'
+            }} onClick={addItem} variant="contained">+</Button>
             {error && <div className='error-message'>{error}</div>}
         </div>
     );
