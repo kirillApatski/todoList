@@ -1,6 +1,8 @@
 import React, {FC} from 'react';
 import {FilteredType} from "../../App";
 import AddItemForm from "../common/AddItemForm/AddItemForm";
+import {EditableSpan} from "../common/EditableSpan/EditableSpan";
+import {Task} from "./Task/Task";
 
 type TodoListPropsType = {
     title: string
@@ -12,6 +14,8 @@ type TodoListPropsType = {
     addTasks: (title: string, todolistId: string) => void
     changeTaskStatus: (id: string, isDone: boolean, todolistId: string) => void
     removeTodolist: (todolistId: string) => void
+    changeTaskTitle: (todolistId: string, id: string, newTitle: string) => void
+    changeTodolistTitle:(newTitle: string, todolistId: string) => void
 }
 export type TaskType = {
     id: string,
@@ -29,7 +33,9 @@ const TodoList: FC<TodoListPropsType> = (
         changeTaskStatus,
         filter,
         todolistId,
-        removeTodolist
+        removeTodolist,
+        changeTaskTitle,
+        changeTodolistTitle
     }
 ) => {
     const addTaskHandler = (title: string) => {
@@ -39,9 +45,15 @@ const TodoList: FC<TodoListPropsType> = (
     const onFilterClickHandler = (filet: FilteredType) => {
         changeFilter(filet, todolistId)
     }
+    const onChangeTodolistTitle = (newTitle: string) => {
+        changeTodolistTitle(newTitle, todolistId)
+    }
     return (
         <div>
-            <h3>{title}<button onClick={() => removeTodolist(todolistId)}>X</button></h3>
+            <h3>
+                <EditableSpan value={title} onChange={onChangeTodolistTitle}/>
+                <button onClick={() => removeTodolist(todolistId)}>X</button>
+            </h3>
             <div>
                 <AddItemForm callback={addTaskHandler}/>
             </div>
@@ -49,12 +61,13 @@ const TodoList: FC<TodoListPropsType> = (
                 {tasks.map(task => {
 
                     return (
-                        <li key={task.id} className={task.isDone ? 'is-done' : ''}>
-                            <input type="checkbox" checked={task.isDone}
-                                   onChange={(event) => changeTaskStatus(task.id, event.currentTarget.checked, todolistId)}/>
-                            <span>{task.title}</span>
-                            <button onClick={() => removeTask(task.id, todolistId)}>X</button>
-                        </li>
+                        <Task
+                            todolistId={todolistId}
+                            task={task}
+                            removeTask={removeTask}
+                            changeTaskStatus={changeTaskStatus}
+                            changeTaskTitle={changeTaskTitle}
+                        />
                     )
                 })}
             </ul>
