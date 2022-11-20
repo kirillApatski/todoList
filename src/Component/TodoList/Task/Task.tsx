@@ -20,16 +20,14 @@ export const Task: FC<PropsTaskType> = ({task, removeTask, changeTaskStatus, tod
     }
 
     return (
-        <li key={task.id} className={task.isDone ? 'is-done' : ''}>
+        <div key={task.id} className={task.isDone ? 'is-done' : ''}>
             <Checkbox defaultChecked color="success" checked={task.isDone}
                       onChange={(event) => changeTaskStatus(task.id, event.currentTarget.checked, todolistId)}/>
-            <input type="checkbox" checked={task.isDone}
-                   onChange={(event) => changeTaskStatus(task.id, event.currentTarget.checked, todolistId)}/>
             <EditableSpan value={task.title} onChange={onChangeTaskTitleHandler}/>
             <IconButton aria-label="delete" onClick={() => removeTask(task.id, todolistId)}>
                 <Delete/>
             </IconButton>
-        </li>
+        </div>
     );
 };
 

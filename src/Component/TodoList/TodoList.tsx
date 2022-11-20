@@ -60,7 +60,7 @@ const TodoList: FC<TodoListPropsType> = (
             <div>
                 <AddItemForm callback={addTaskHandler}/>
             </div>
-            <ul>
+            <div>
                 {tasks.map(task => {
 
                     return (
@@ -74,7 +74,7 @@ const TodoList: FC<TodoListPropsType> = (
                         />
                     )
                 })}
-            </ul>
+            </div>
             <div>
                 <Button variant="contained" color={filter === 'all' ? 'success' : 'inherit'} onClick={() => onFilterClickHandler('all')}>All</Button>
                 <Button variant="contained" color={filter === 'active' ? 'success' : 'inherit'} onClick={() => onFilterClickHandler('active')}>Active</Button>

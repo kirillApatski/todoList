@@ -34,10 +34,11 @@ const AddItemForm: FC<AddItemFormPropsType> = ({callback}) => {
                 id="outlined-basic"
                 label="Add Title"
                 variant="outlined"
+                helperText={error}
                 value={title}
                 onChange={onChangeHandler}
                 onKeyDown={onKeyDownHandler}
-                className={error ? 'error' : ''}
+                error={!!error}
             />
             <Button style={{
                 maxWidth: '30px',
@@ -46,7 +47,6 @@ const AddItemForm: FC<AddItemFormPropsType> = ({callback}) => {
                 minHeight: '30px',
                 backgroundColor: 'grey'
             }} onClick={addItem} variant="contained">+</Button>
-            {error && <div className='error-message'>{error}</div>}
         </div>
     );
 };
