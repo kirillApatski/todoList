@@ -27,7 +27,6 @@ export const authReducer = slice.reducer
 export const {setIsLoggedInAC} = slice.actions
 
 
-// thunks
 export const loginTC = (data: LoginDataType) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC({status: 'loading'}))
     try {

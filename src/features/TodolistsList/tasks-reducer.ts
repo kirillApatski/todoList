@@ -62,11 +62,7 @@ export const tasksReducer = slice.reducer
 export const {setTasksAC, updateTaskAC, addTaskAC, removeTaskAC} = slice.actions
 
 
-// actions
 
-
-
-// thunks
 export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC({status:'loading'}))
     todolistsAPI.getTasks(todolistId)
@@ -80,7 +76,7 @@ export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: D
     dispatch(setAppStatusAC({status:'loading'}))
 
     todolistsAPI.deleteTask(todolistId, taskId)
-        .then(res => {
+        .then(() => {
             const action = removeTaskAC({taskId: taskId,todolistId: todolistId})
             dispatch(action)
             dispatch(setAppStatusAC({status:'succeeded'}))
@@ -112,7 +108,6 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
         const state = getState()
         const task = state.tasks[todolistId].find(t => t.id === taskId)
         if (!task) {
-            //throw new Error("task not found in the state");
             console.warn('task not found in the state')
 
             return
