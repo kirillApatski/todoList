@@ -20,15 +20,15 @@ const slice = createSlice({
             state.push({...action.payload.todolist, filter: 'all', entityStatus: 'idle'})
         },
         changeTodolistTitleAC(state, action: PayloadAction<{ id: string, title: string }>) {
-            const index = state.findIndex(todo => todo.id == action.payload.id)
+            const index = state.findIndex(todo => todo.id === action.payload.id)
             state[index].title = action.payload.title
         },
         changeTodolistFilterAC(state, action: PayloadAction<{ id: string, filter: FilterValuesType }>) {
-            const index = state.findIndex(todo => todo.id == action.payload.id)
+            const index = state.findIndex(todo => todo.id === action.payload.id)
             state[index].filter = action.payload.filter
         },
         changeTodolistEntityStatusAC(state, action: PayloadAction<{ id: string, status: RequestStatusType }>) {
-            const index = state.findIndex(todo => todo.id == action.payload.id)
+            const index = state.findIndex(todo => todo.id === action.payload.id)
             state[index].entityStatus = action.payload.status
         },
         setTodolistsAC(state, action: PayloadAction<{ todolists: Array<TodolistType> }>) {
@@ -71,7 +71,7 @@ export const removeTodolistTC = (todolistId: string) => {
         //изменим статус конкретного тудулиста, чтобы он мог задизеблить что надо
         dispatch(changeTodolistEntityStatusAC({id: todolistId, status: 'loading'}))
         todolistsAPI.deleteTodolist(todolistId)
-            .then((res) => {
+            .then(() => {
                 dispatch(removeTodolistAC({id: todolistId}))
                 //скажем глобально приложению, что асинхронная операция завершена
                 dispatch(setAppStatusAC({status: 'succeeded'}))
@@ -91,7 +91,7 @@ export const addTodolistTC = (title: string) => {
 export const changeTodolistTitleTC = (id: string, title: string) => {
     return (dispatch: Dispatch) => {
         todolistsAPI.updateTodolist(id, title)
-            .then((res) => {
+            .then(() => {
                 dispatch(changeTodolistTitleAC({id: id,title: title}))
             })
     }

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {FC, useEffect} from 'react'
 import './App.css'
 import {TodolistsList} from '../features/TodolistsList/TodolistsList'
 import {useDispatch, useSelector} from 'react-redux'
@@ -28,7 +28,7 @@ export enum ROUTE {
     NOT_FOUND = '/404'
 }
 
-function App({demo = false}: PropsType) {
+export const App: FC<PropsType> = ({demo = false}) => {
     const dispatch = useDispatch()
     const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status)
     const isInitialized = useSelector<AppRootStateType, boolean>((state) => state.app.isInitialized)
