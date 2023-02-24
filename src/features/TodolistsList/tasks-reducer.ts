@@ -61,8 +61,6 @@ const slice = createSlice({
 export const tasksReducer = slice.reducer
 export const {setTasksAC, updateTaskAC, addTaskAC, removeTaskAC} = slice.actions
 
-
-
 export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC({status:'loading'}))
     todolistsAPI.getTasks(todolistId)
