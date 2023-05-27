@@ -1,7 +1,5 @@
-import {Dispatch} from 'redux'
 import {
-  setAppStatusAC,
-  setIsInitializedAC,
+  appActions,
 } from 'app/app-reducer'
 import {LoginDataType} from "./Login";
 import {authAPI, Result_Code} from "api/todolists-api";
@@ -13,11 +11,11 @@ const initialState = {
 }
 
 export const loginTC = createAsyncThunk('auth/login', async (param: LoginDataType, thunkAPI) => {
-  thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
+  thunkAPI.dispatch(appActions.setAppStatusAC({status: 'loading'}))
   try {
     const response = await authAPI.login(param)
     if (response.data.resultCode === Result_Code.OK) {
-      thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
+      thunkAPI.dispatch(appActions.setAppStatusAC({status: 'succeeded'}))
       return {isLoggedIn: true}
     } else {
       handleServerAppError(response.data, thunkAPI.dispatch)
@@ -30,11 +28,11 @@ export const loginTC = createAsyncThunk('auth/login', async (param: LoginDataTyp
 })
 
 export const logOutTC = createAsyncThunk('auth/logOut', async (_, thunkAPI) => {
-  thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
+  thunkAPI.dispatch(appActions.setAppStatusAC({status: 'loading'}))
   try {
     const response = await authAPI.logOut()
     if (response.data.resultCode === Result_Code.OK) {
-      thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
+      thunkAPI.dispatch(appActions.setAppStatusAC({status: 'succeeded'}))
       return {isLoggedIn: false}
     } else {
       handleServerAppError(response.data, thunkAPI.dispatch)
@@ -70,26 +68,6 @@ export const authReducer = slice.reducer
 export const authActions = slice.actions
 
 
-export const initializeAppTC = () => async (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC({status: 'loading'}))
-  try {
-    const response = await authAPI.me()
-    if (response.data.resultCode === Result_Code.OK) {
-      dispatch(authActions.setIsLoggedIn({isLoggedIn: true}))
-      dispatch(setIsInitializedAC({isInitialized: true}))
-      dispatch(setAppStatusAC({status: 'succeeded'}))
 
-    } else {
-      handleServerAppError(response.data, dispatch)
-    }
-  } catch (error) {
-    handleServerNetworkError(error as { message: string }, dispatch)
-  } finally {
-    dispatch(setIsInitializedAC({isInitialized: true}))
-  }
-
-  dispatch(setAppStatusAC({status: 'succeeded'}))
-
-}
 
 

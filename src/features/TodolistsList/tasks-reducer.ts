@@ -13,27 +13,27 @@ import {
 } from 'api/todolists-api'
 import {Dispatch} from 'redux'
 import {AppRootStateType} from 'app/store'
-import {setAppStatusAC} from 'app/app-reducer'
+import {appActions} from 'app/app-reducer'
 import {handleServerAppError, handleServerNetworkError} from 'utils/error-utils'
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const initialState: TasksStateType = {}
 
 export const fetchTasksTC = createAsyncThunk('tasks/fetchTasksTC', (todolistId: string, thunkAPI) => {
-  thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
+  thunkAPI.dispatch(appActions.setAppStatusAC({status: 'loading'}))
   return todolistsAPI.getTasks(todolistId)
     .then((res) => {
       const tasks = res.data.items
-      thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
+      thunkAPI.dispatch(appActions.setAppStatusAC({status: 'succeeded'}))
       return {tasks, todolistId}
     })
 })
 export const removeTaskTC = createAsyncThunk('tasks/removeTaskTC', (param: {taskId: string, todolistId: string}, thunkAPI) => {
-  thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
+  thunkAPI.dispatch(appActions.setAppStatusAC({status: 'loading'}))
 
   return todolistsAPI.deleteTask(param.todolistId, param.taskId)
     .then(() => {
-      thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
+      thunkAPI.dispatch(appActions.setAppStatusAC({status: 'succeeded'}))
       return {taskId: param.taskId, todolistId: param.todolistId}
     })
 })
@@ -80,17 +80,17 @@ export const {updateTaskAC, addTaskAC} = slice.actions
 
 
 export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC({status: 'loading'}))
+  dispatch(appActions.setAppStatusAC({status: 'loading'}))
   todolistsAPI.createTask(todolistId, title)
     .then(res => {
       if (res.data.resultCode === 0) {
         const task = res.data.data.item
         const action = addTaskAC(task)
         dispatch(action)
-        dispatch(setAppStatusAC({status: 'succeeded'}))
+        dispatch(appActions.setAppStatusAC({status: 'succeeded'}))
       } else {
         handleServerAppError(res.data, dispatch);
-        dispatch(setAppStatusAC({status: 'succeeded'}))
+        dispatch(appActions.setAppStatusAC({status: 'succeeded'}))
 
       }
     })
