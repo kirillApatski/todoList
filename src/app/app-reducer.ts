@@ -2,7 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Dispatch} from "redux";
 import {authAPI, Result_Code} from "api/todolists-api";
 import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
-import {authActions} from "features/Login/auth-reducer";
+import {authActions} from "features/ayth/auth-reducer";
 
 
 export type AppInitialStateType = typeof initialState

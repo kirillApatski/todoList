@@ -2,8 +2,7 @@ import React, {FC, useEffect} from 'react'
 import './App.css'
 import {TodolistsList} from 'features/TodolistsList/TodolistsList'
 import {useDispatch, useSelector} from 'react-redux'
-import {AppRootStateType} from './store'
-import {initializeAppTC, RequestStatusType} from './app-reducer'
+import {initializeAppTC} from './app-reducer'
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -13,10 +12,12 @@ import Container from '@mui/material/Container';
 import LinearProgress from '@mui/material/LinearProgress';
 import {Menu} from '@mui/icons-material';
 import {ErrorSnackbar} from 'components/ErrorSnackbar/ErrorSnackbar'
-import {Login} from "features/Login/Login";
+import {Login} from "features/ayth/Login";
 import {Routes, Route, Navigate} from "react-router-dom";
-import {logOutTC} from "features/Login/auth-reducer";
+import {logOutTC} from "features/ayth/auth-reducer";
 import {CircularProgress} from "@mui/material";
+import {selectorIsInitialized, selectorStatus} from "app/app.selectors";
+import {selectorIsLoggedIn} from "features/ayth/auth.selectors";
 
 type PropsType = {
     demo?: boolean
@@ -30,9 +31,9 @@ export enum ROUTE {
 
 export const App: FC<PropsType> = ({demo = false}) => {
     const dispatch = useDispatch()
-    const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status)
-    const isInitialized = useSelector<AppRootStateType, boolean>((state) => state.app.isInitialized)
-    const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.auth.isLoggedIn)
+    const status = useSelector(selectorStatus)
+    const isInitialized = useSelector(selectorIsInitialized)
+    const isLoggedIn = useSelector(selectorIsLoggedIn)
 
     const logOut = () => {
         dispatch(logOutTC())
