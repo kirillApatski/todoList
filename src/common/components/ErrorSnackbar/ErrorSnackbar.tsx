@@ -12,7 +12,6 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 
 export function ErrorSnackbar() {
-
     const error = useSelector<AppRootStateType, string | null>(state => state.app.error)
 
     const dispatch = useDispatch();
@@ -21,11 +20,11 @@ export function ErrorSnackbar() {
         if (reason === 'clickaway') {
             return;
         }
-        dispatch(appActions.setAppErrorAC({error: null}))
+        dispatch(appActions.setAppError({error: null}))
     };
 
     return (
-        <Snackbar open={error !== null} autoHideDuration={6000} onClick={handleClose}>
+        <Snackbar open={!!error} autoHideDuration={6000} onClick={handleClose}>
             <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
                 {error}
             </Alert>
