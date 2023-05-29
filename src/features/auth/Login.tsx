@@ -12,7 +12,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {loginTC} from "./auth-reducer";
 import {Navigate} from "react-router-dom";
 import {ROUTE} from "app/App";
-import {selectorIsLoggedIn} from "features/ayth/auth.selectors";
+import {selectorIsLoggedIn} from "features/auth/auth.selectors";
 
 type FormikErrorType = {
     email?: string
