@@ -1,8 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Dispatch} from "redux";
-import {authAPI, Result_Code} from "api/todolists-api";
-import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
-import {authActions} from "features/ayth/auth-reducer";
+import {authAPI, Result_Code} from "common/api/todolists-api";
+import {authActions} from "features/auth/auth-reducer";
+import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from "common/utils";
 
 
 export type AppInitialStateType = typeof initialState
@@ -16,37 +15,43 @@ const initialState = {
 }
 
 
+export const initializeAppTC = createAppAsyncThunk(
+  'app/initializeAppTC',
+  async (_, thunkAPI) => {
 
-export const initializeAppTC = () => async (dispatch: Dispatch) => {
-    dispatch(appActions.setAppStatusAC({status: 'loading'}))
-    try {
-        const response = await authAPI.me()
-        if (response.data.resultCode === Result_Code.OK) {
-            dispatch(authActions.setIsLoggedIn({isLoggedIn: true}))
-            dispatch(appActions.setIsInitializedAC({isInitialized: true}))
-            dispatch(appActions.setAppStatusAC({status: 'succeeded'}))
+      const {dispatch, rejectWithValue} = thunkAPI
 
-        } else {
-            handleServerAppError(response.data, dispatch)
-        }
-    } catch (error) {
-        handleServerNetworkError(error as { message: string }, dispatch)
-    } finally {
-        dispatch(appActions.setIsInitializedAC({isInitialized: true}))
-    }
+      try {
 
-    dispatch(appActions.setAppStatusAC({status: 'succeeded'}))
+          dispatch(appActions.setAppStatus({status: 'loading'}))
+          const response = await authAPI.me()
 
-}
+          if(response.data.resultCode === Result_Code.OK) {
+
+              dispatch(authActions.setIsLoggedIn({isLoggedIn: true}))
+              dispatch(appActions.setIsInitializedAC({isInitialized: true}))
+              dispatch(appActions.setAppStatus({status: 'succeeded'}))
+
+          } else {
+
+              handleServerAppError(response.data, dispatch)
+              return rejectWithValue(null)
+          }
+      } catch (e) {
+          handleServerNetworkError(e, dispatch)
+          return rejectWithValue(null)
+      }
+  }
+)
 
 const slice = createSlice({
     name: 'app',
     initialState,
     reducers: {
-        setAppErrorAC(state, action: PayloadAction<{error: string | null}>) {
+        setAppError(state, action: PayloadAction<{error: string | null}>) {
             state.error = action.payload.error
         },
-        setAppStatusAC(state, action: PayloadAction<{status: RequestStatusType}>) {
+        setAppStatus(state, action: PayloadAction<{status: RequestStatusType}>) {
             state.status = action.payload.status
         },
         setIsInitializedAC(state, action: PayloadAction<{isInitialized: boolean}>) {
