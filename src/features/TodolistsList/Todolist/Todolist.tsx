@@ -7,12 +7,13 @@ import { Delete } from '@mui/icons-material';
 import { Task } from './Task/Task'
 import { TaskStatuses, TaskType } from 'common/api/todolists-api'
 import { FilterValuesType, TodolistDomainType } from '../todolists-reducer'
-import {useDispatch, useSelector} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import { tasksThunks } from '../tasks-reducer'
 
 import {Navigate} from "react-router-dom";
 import {ROUTE} from "app/App";
 import {selectorIsLoggedIn} from "features/auth/auth.selectors";
+import {useAppSelector} from "common/hooks/useApp";
 
 type PropsType = {
     todolist: TodolistDomainType
@@ -29,7 +30,7 @@ type PropsType = {
 }
 
 export const Todolist = React.memo(function ({demo = false, ...props}: PropsType) {
-    const isLoggedIn = useSelector(selectorIsLoggedIn)
+    const isLoggedIn = useAppSelector(selectorIsLoggedIn)
 
     const dispatch = useDispatch()
     useEffect(() => {
