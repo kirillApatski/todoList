@@ -1,8 +1,7 @@
 import React, {FC, useEffect} from 'react'
 import './App.css'
 import {TodolistsList} from 'features/TodolistsList/TodolistsList'
-import {useDispatch, useSelector} from 'react-redux'
-import {initializeAppTC} from './app-reducer'
+import {useDispatch} from 'react-redux'
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -14,10 +13,13 @@ import {Menu} from '@mui/icons-material';
 import {ErrorSnackbar} from 'common/components/ErrorSnackbar/ErrorSnackbar'
 import {Login} from "features/auth/Login";
 import {Routes, Route, Navigate} from "react-router-dom";
-import {logOutTC} from "features/auth/auth-reducer";
 import {CircularProgress} from "@mui/material";
 import {selectorIsInitialized, selectorStatus} from "app/app.selectors";
 import {selectorIsLoggedIn} from "features/auth/auth.selectors";
+import {appThunk} from "app/app-reducer";
+import {authThunk} from "features/auth/auth-reducer";
+import {useAppSelector} from "common/hooks/useApp";
+import {useActions} from "common/hooks/useActions";
 
 type PropsType = {
     demo?: boolean
@@ -31,16 +33,18 @@ export enum ROUTE {
 
 export const App: FC<PropsType> = ({demo = false}) => {
     const dispatch = useDispatch()
-    const status = useSelector(selectorStatus)
-    const isInitialized = useSelector(selectorIsInitialized)
-    const isLoggedIn = useSelector(selectorIsLoggedIn)
+    const status = useAppSelector(selectorStatus)
+    const isInitialized = useAppSelector(selectorIsInitialized)
+    const isLoggedIn = useAppSelector(selectorIsLoggedIn)
+    const {initializeAppTC} = useActions(appThunk)
+    const {logOutTC} = useActions(authThunk)
 
     const logOut = () => {
-        dispatch(logOutTC())
+        logOutTC()
     }
 
     useEffect(() => {
-        dispatch(initializeAppTC())
+        initializeAppTC()
     }, [dispatch])
 
     if(!isInitialized) {
