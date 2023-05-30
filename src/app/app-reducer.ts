@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {authAPI, Result_Code} from "common/api/todolists-api";
 import {authActions} from "features/auth/auth-reducer";
-import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from "common/utils";
+import {createAppAsyncThunk, handleServerNetworkError} from "common/utils";
 
 
 export type AppInitialStateType = typeof initialState
@@ -15,7 +15,7 @@ const initialState = {
 }
 
 
-export const initializeAppTC = createAppAsyncThunk(
+const initializeAppTC = createAppAsyncThunk(
   'app/initializeAppTC',
   async (_, thunkAPI) => {
 
@@ -25,6 +25,7 @@ export const initializeAppTC = createAppAsyncThunk(
 
           dispatch(appActions.setAppStatus({status: 'loading'}))
           const response = await authAPI.me()
+          dispatch(appActions.setAppStatus({status: 'succeeded'}))
 
           if(response.data.resultCode === Result_Code.OK) {
 
@@ -33,13 +34,13 @@ export const initializeAppTC = createAppAsyncThunk(
               dispatch(appActions.setAppStatus({status: 'succeeded'}))
 
           } else {
-
-              handleServerAppError(response.data, dispatch)
               return rejectWithValue(null)
           }
       } catch (e) {
           handleServerNetworkError(e, dispatch)
           return rejectWithValue(null)
+      } finally {
+          dispatch(appActions.setIsInitializedAC({isInitialized: true}))
       }
   }
 )
@@ -62,6 +63,7 @@ const slice = createSlice({
 
 export const appReducer = slice.reducer
 export const appActions = slice.actions
+export const appThunk = {initializeAppTC}
 
 
 

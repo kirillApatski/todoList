@@ -6,7 +6,7 @@ import {createAppAsyncThunk, handleServerNetworkError} from "common/utils";
 
 const initialState: Array<TodolistDomainType> = []
 
-export const fetchTodolistsTC = createAppAsyncThunk<{todolists: TodolistType[]}>(
+const fetchTodolistsTC = createAppAsyncThunk<{todolists: TodolistType[]}>(
   'todo/fetchTodolistsTC',
   async (_, thunkAPI) => {
       const {dispatch, rejectWithValue} = thunkAPI
@@ -22,7 +22,7 @@ export const fetchTodolistsTC = createAppAsyncThunk<{todolists: TodolistType[]}>
   }
 )
 
-export const removeTodolistTC = createAppAsyncThunk<{ id: string}, {id: string}>(
+const removeTodolistTC = createAppAsyncThunk<{ id: string}, {id: string}>(
   'todo/removeTodolistTC',
   async (param:{id: string}, thunkAPI) => {
       const {dispatch, rejectWithValue} = thunkAPI
@@ -42,7 +42,7 @@ export const removeTodolistTC = createAppAsyncThunk<{ id: string}, {id: string}>
   }
 )
 
-export const addTodolistTC = createAppAsyncThunk<{todolist: TodolistType}, string>(
+const addTodolistTC = createAppAsyncThunk<{todolist: TodolistType}, string>(
   'todo/addTodolistTC',
   async (title: string, thunkAPI) => {
       const {dispatch, rejectWithValue} = thunkAPI
@@ -58,7 +58,7 @@ export const addTodolistTC = createAppAsyncThunk<{todolist: TodolistType}, strin
   }
 )
 
-export const changeTodolistTitleTC = createAppAsyncThunk<{id: string,title: string}, {id: string,title: string}>(
+const changeTodolistTitleTC = createAppAsyncThunk<{id: string,title: string}, {id: string,title: string}>(
   'todo/changeTodolistTitleTC',
   async (param: {id: string, title: string}, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
