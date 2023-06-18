@@ -111,6 +111,7 @@ const slice = createSlice({
     }
 })
 export const todolistsReducer = slice.reducer
+export const todolistActions = slice.actions
 export const todoThunk = {fetchTodolistsTC, removeTodolistTC, addTodolistTC, changeTodolistTitleTC}
 
 export const {

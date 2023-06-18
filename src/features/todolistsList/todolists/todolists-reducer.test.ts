@@ -3,7 +3,7 @@ import {
   FilterValuesType,
   TodolistDomainType,
   todolistsReducer, todoThunk
-} from './todolists-reducer';
+} from 'features/todolistsList/todolists/todolists-reducer';
 import {v1} from 'uuid';
 
 let todolistId1: string;

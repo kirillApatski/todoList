@@ -1,6 +1,6 @@
 import {
    todoThunk,
-} from './todolists-reducer'
+} from 'features/todolistsList/todolists/todolists-reducer'
 import {
   AddTaskArgType, Result_Code,
   TaskPriorities,

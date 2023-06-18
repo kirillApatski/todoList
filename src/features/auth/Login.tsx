@@ -55,7 +55,6 @@ export const Login = () => {
         },
         onSubmit: (values: LoginDataType) => {
             loginTC(values)
-            formik.resetForm()
         },
     });
 

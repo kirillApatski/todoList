@@ -1,6 +1,6 @@
 import React, {FC, useEffect} from 'react'
 import './App.css'
-import {TodolistsList} from 'features/TodolistsList/TodolistsList'
+import {TodolistsList} from 'features/todolistsList/todolistsList'
 import {useDispatch} from 'react-redux'
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';

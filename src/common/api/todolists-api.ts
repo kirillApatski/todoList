@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from 'axios'
 import {LoginDataType} from "features/auth/Login";
-import {UpdateDomainTaskModelType} from "features/TodolistsList/tasks-reducer";
+import {UpdateDomainTaskModelType} from "features/todolistsList/tasks/tasks-reducer";
 
 const instance = axios.create({
   baseURL: 'https://social-network.samuraijs.com/api/1.1/',

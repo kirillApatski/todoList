@@ -1,6 +1,6 @@
-import {tasksThunks, TasksStateType, tasksReducer} from './tasks-reducer';
+import {tasksThunks, TasksStateType, tasksReducer} from 'features/todolistsList/tasks/tasks-reducer';
 import {TaskPriorities, TaskStatuses} from "common/api/todolists-api";
-import {todoThunk} from "features/TodolistsList/todolists-reducer";
+import {todoThunk} from "features/todolistsList/todolists/todolists-reducer";
 
 let startState: TasksStateType = {};
 beforeEach(() => {
