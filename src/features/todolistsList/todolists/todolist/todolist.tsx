@@ -4,7 +4,7 @@ import { EditableSpan } from 'common/components/EditableSpan/EditableSpan'
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import { Delete } from '@mui/icons-material';
-import { Task } from 'features/todolistsList/todolists/Todolist/Task/Task'
+import { Task } from 'features/todolistsList/tasks/task/Task'
 import { TaskStatuses, TaskType } from 'common/api/todolists-api'
 import {
     FilterValuesType,

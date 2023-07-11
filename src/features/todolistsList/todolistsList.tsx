@@ -5,7 +5,7 @@ import {
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { AddItemForm } from 'common/components/AddItemForm/AddItemForm'
-import { Todolist } from './todolists/Todolist/Todolist'
+import { Todolist } from 'features/todolistsList/todolists/todolist/todolist'
 import {Navigate} from "react-router-dom";
 import {ROUTE} from "app/App";
 import {selectorIsLoggedIn} from "features/auth/auth.selectors";
